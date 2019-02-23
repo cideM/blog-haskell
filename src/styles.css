@@ -1,0 +1,117 @@
+html {
+  font-size: 16px;
+  line-height: 1.4;
+  color: rgb(50, 50, 50);
+  background: rgba(255, 255, 255, 0.9);
+  font-family: "Raleway", sans-serif;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  max-width: 40em;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.9);
+  height: 100%;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", sans-serif;
+}
+
+a,
+a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link {
+  background-image: linear-gradient(to bottom, deepskyblue, deepskyblue);
+  background-position: 0 1.05em;
+  background-repeat: repeat-x;
+  background-size: 1px 4px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  background: rgba(240, 240, 240);
+}
+
+.header__title {
+  background-color: deepskyblue;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  color: white;
+  padding: 0.5rem 1rem;
+}
+
+.header__subtitle {
+  text-align: right;
+  padding: 0.5rem 1rem;
+}
+
+.content {
+  padding: 0 0.25rem;
+}
+
+.dimmed {
+  color: rgba(50, 50, 50, 0.7);
+}
+
+.toc {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.toc__entry {
+  margin: 2rem 0rem;
+}
+
+.toc__date {
+  display: block;
+  margin: 0;
+}
+
+.toc__title {
+  margin: 0;
+  display: block;
+}
+
+.post__container {
+  padding: 0.5rem 0.25rem;
+}
+
+.post__title {
+  margin-top: 0.5em;
+}
+
+.post__content pre {
+  padding: 1em;
+  max-width: 100%;
+  overflow: auto;
+  background: rgb(240, 240, 240);
+}
+
+.post__content a {
+  background-image: linear-gradient(to bottom, deepskyblue, deepskyblue);
+  background-position: 0 1.05em;
+  background-repeat: repeat-x;
+  background-size: 1px 4px;
+}
+
+.post__content blockquote {
+  border-left: 20px solid deepskyblue;
+  background: rgb(240, 240, 240);
+  padding: 0.5em 1em;
+  font-style: italic;
+  margin: 0;
+}

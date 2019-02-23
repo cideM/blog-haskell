@@ -1,0 +1,20 @@
+<section class="header">
+    <a href="https://github.com/cideM/">
+        <div class="header__title">
+            Florian Beeres
+        </div>
+    </a>
+    <div class="header__subtitle">Haskell, Javascript</div>
+</section>
+<section class="content">
+    <ol class="toc">
+        {{#posts}}
+            <li class="toc__entry">
+                <a href="/{{postDir}}index.html">
+                    <h2 class="toc__title">{{frontmatter.title}}</h2>
+                    <p class="toc__date dimmed">{{displayDate}}</p>
+                </a>
+            </li>
+        {{/posts}}
+    </ol>
+</section>

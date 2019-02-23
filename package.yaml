@@ -1,0 +1,63 @@
+name: blog
+version: 0.1.0.0
+github: "cidem/blog"
+license: BSD3
+author: "Florian Beeres"
+maintainer: "yuuki@protonmail.com"
+copyright: "None?"
+
+extra-source-files:
+  - README.md
+  - ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Personal blog
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description: Please see the README on GitHub at <https://github.com/cidem/blog#readme>
+
+dependencies:
+  - base >= 4.7 && < 5
+  - aeson
+  - stache
+  - text
+  - time
+  - megaparsec
+  - containers
+  - yaml
+  - bytestring
+  - directory
+  - path
+  - safe-exceptions
+  - cmark
+
+library:
+  source-dirs: src
+  ghc-options:
+    - -Wall
+    - -Werror
+
+executables:
+  blog-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - blog
+
+tests:
+  blog-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - blog

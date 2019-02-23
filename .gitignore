@@ -1,0 +1,6 @@
+.stack-work/
+blog.cabal
+*~
+public
+tags
+.cache
