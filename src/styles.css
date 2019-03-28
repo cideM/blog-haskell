@@ -95,10 +95,11 @@ a:visited {
 }
 
 .post__content pre {
-  padding: 1em;
+  padding: 0.5em;
   max-width: 100%;
   overflow: auto;
   background: rgb(240, 240, 240);
+  font-size: 14px;
 }
 
 .post__content a {
