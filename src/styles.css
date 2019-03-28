@@ -1,5 +1,5 @@
 html {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.4;
   color: rgb(50, 50, 50);
   background: rgba(255, 255, 255, 0.9);
@@ -96,10 +96,13 @@ a:visited {
 
 .post__content pre {
   padding: 0.5em;
-  max-width: 100%;
-  overflow: auto;
   background: rgb(240, 240, 240);
-  font-size: 14px;
+  overflow: auto;
+}
+
+.post__content code {
+  background: rgb(240, 240, 240);
+  font-family: "Ubuntu Mono", monospace;
 }
 
 .post__content a {
