@@ -3,146 +3,122 @@ title: Editors
 date: "2018-09-10"
 ---
 
-In this post I will compare Visual Studio Code and Neovim, my two primary
-editors. The comparison will include an arbitrary set of plugins for each
-editor, depending on my needs and preferences. I will skip areas that don't
-concern me and all my opinions are influenced by the languages and environments
-in which I work.
+_Almost everything in this post applies to Vim as well, but since I use Neovim
+exclusively I'll refer to that, instead of Vim_
 
-As a professional front end developer I write JS for at least 8 hours every
-day. My free time is spent in Haskell and Rust (~80/20). If one or both editors
-suck for your \$LANGUAGE then that might not be accounted for in this post.
+## Introduction
 
-## Editing
+Neovim is more than just a text editor. It's the combination of modal editing
+paradigm, vimscript as a configuration and scripting language, and the actual
+program. Unlike in many other editors and IDEs, all three aspects are
+intertwined, meaning that a couple of lines of configuration can, over time,
+morph into a plugin, with options, functions and mappings. That just doesn't
+happen in Visual Studio Code, where configuration is just an object, or Intellj
+editors, where you toggle options exposed to you in a GUI.
 
-Neovim is unrivalled at editing text. Thanks to both its built-in capabilities
-and plugins like `vim-surround` and `targets` it's trivial to change text
-within certain delimiters, or change the delimiters themselves. No VSC plugin
-comes even close and the keyboard shortcuts and functions VSC offers pale in
-comparison to even just the built-in stuff.
+In my opinion, that kind of customizability is at the heart of what makes
+Neovim so special (I assume the same applies to Emacs). Comparing Neovim to
+other editors based on a checklist of features is therefore missing the point.
+Neovim's syntax highlighting is lacking. Its built-in completion is a blocking
+operation. The included file explorer comes with tons of gotchas. It doesn't
+have a plugin manager. Very few commands give you any visual feedback until you
+execute them. So why should anyone put up with all of that?
 
-There is one exception though: multi-cursor support. I think that VSC's
-multi-cursor implementation is in 75% of cases more intuitive and faster than
-neovim macros. There are other cases in which multiple cursors simply won't do the
-trick, where recorded macros really shine, but those are rare. I think that
-Kakoune strikes the perfect balance between modal editing and giving me
-immediate visual feedback. Still, Neovim runs circles around VSC at editing
-text.
+If you check any Neovim related post on hackernews, you'll inevitably come
+across two arguments: it uses very few resources and it's ubiquitous (or rather
+Vim is). Both arguments are correct, but I don't think that they're particulary
+strong. Sublime Text is an extremely lean and efficient editor, and I don't
+think that Vims universal availability is a result of its sheer excellence.
 
-## Linting
+So again, what's the appeal?
 
-THE most disappointing topic for me, it's 2019 after all! The JS developer in
-me is perfectly happy with VSC. Why? Because the ESlint plugin is maintained by
-Microsoft and it's a posterchild for language server plugins. Every other
-editor out there that just manually invokes Eslint will be orders of magnitude
-slower than VSC. At work we have a somewhat involved Webpack setup which
-results in ESlint taking a long time to run -- except in VSC.
+## Your Editor
 
-VSC currently has mediocre support for formatting error popups. That means if
-your error messages are oneliners (as is the case for JS), it's totally fine.
-But look at Haskell or the ASCII-art powered errors in Rust and you're losing
-important information. Now neovim doesn't exactly solve this problem although
-ALE with `:ALEDetail` gives error messages a little bit more breathing room.
-Ultimately though I almost always resort to a terminal where I just run the
-linter/compiler myself (think `ghcid`).
+Neovim's core strength is its customizability. If there's a task that you find
+yourself repeating over and over again, turn it into a mapping. If a mapping
+doesn't do it, create a function. Your first instinct should not be to go and
+find a plugin that does everything for you. In many editors there's a gap
+between what you can achieve through configuration and what's possible through
+plugins, which require a rather big upfront investment. By relying on plugins
+in Neovim as well, you're recreating that boundary, you're still operating
+under the same constraint as you would in other editors.
 
-When it comes to linter support ALE generally has you covered and especially
-for Haskell it offers more options than the individual VSC plugins.
+I'm not advocating against the use of plugins by the way. Rather I encourage
+people to start their Neovim journey by reading `:help`, by buying a book
+(_Learn Vimscript the Hard Way_) and by starting with a [minimal .vimrc
+(init.vim in Neovim)](https://github.com/romainl/idiomatic-vimrc). Using Neovim
+means using Vimscript. Learning Neovim therefore means learning Vimscript. If
+you come across a plugin that does pretty much exactly what you want in the way
+you want it to, by all means, use it! The final goal should be an editor
+tailored to your needs. Based on your mappings, your functions, your plugins,
+enhanced with plugins other people wrote.
 
-At the end of the day, all editors suck equally in this regard and the terminal
-reigns supreme. All hail TUIs!
+There are at least two advantages to this approach: plugins often handle
+various use cases, editor versions and environments. That necessitates more
+lines of code than if you wrote the same thing, but for your particular use
+case, editor version and environment. Less code is usually easier to understand
+than more code. Additionally, you get to customize the editor so it solves
+exactly your problem. With plugins, you often need to adapt your workflow, so
+it fits the way the plugin solves your problem.
 
-## Project Navigation
+## Examples
 
-VSC uses ripgrep. My neovim uses ripgrep. End of story?
+### Linting
 
-Not quite. VSC has the upper hand in most cases since it handles escaping and
-quotes in searches better than `:grep` in neovim. Its preview of search and
-replace is also nicer than what you generally get in neovim (although
-the `traces.vim` plugin helps).
+Linting is tricky business. Some languages like Rust and Haskell output
+(beautiful) multiline error messages. Some editors struggle with fitting those
+errors into their error list or inline popup windows. Neovim's quickfix list
+isn't exactly stellar at that either. I therefore have a combination of
+mappings and configuration options so that I always get the most of the
+compilers and linters I use.
 
-If your search needs are really complicated then being able to pass options
-directly through to ripgrep will put neovim ahead... eventually. It's kind of
-the same story as with multiple cursors. I feel like VSC just nails the
-"excellent in 95% of cases" thing with multiple cursors and search.
+For something simple like ESlint, which mostly outputs oneliners, I use the
+built-in `makeprg` option for example:
 
-Apart from that though, neovim is generally more pleasant. The jumplist is more
-accurate, slash search is faster than ctrl+f search, and with plugins like
-`vim-qf` navigating search results (or whatever you put in the location and
-quick fix list) is so fast that anyone looking over your shoulder won't be able
-to keep up.
+```
+let b:undo_ftplugin="setlocal makeprg< formatprg<"
 
-For languages where VSC has good support its symbol search is nice but honestly
-in many cases I'm at the target location with just slash search/grep while VSC
-hasn't even indexed the code base -- and it seems to do that everytime I open a
-new project/switch projects.
+let b:eslint_exe = trim(system("npm bin")) . "/eslint"
 
-## Speed
+if executable(b:eslint_exe)
+    let &l:makeprg=b:eslint_exe . ' --format unix --fix %'
+end
 
-[Insert Electron trashing]
+if executable("prettier")
+    let &l:formatprg = "prettier --config-precedence file-override"
+end
+```
 
-Honestly? I think VSC has the upper hand here. Neovim only reaches its full
-potential when its running the terminal. That's how you inherit years and years
-of cruft. Weird escape codes, true color, 256 color, 210391029 color,
-underline, italics, terminal multiplexers, they all add their own little
-complexities and quirks. At the end, yes of course Neovim uses way less
-resources and if you use something like Alacritty everything's generally fast
-but VSCs UI is incredibly snappy. I feel like the overall visual design and UI
-snappiness of VSC beats neovim.
+Here I'm just telling Neovim to run my local eslint whenever I run `:make`.
+Thanks to the `--format unix`, Neovim automatically translates the errors into
+quickfix list entries.
 
-At the end of the day both editors are fast enough for my needs.
+As an alternative, I also have this mapping:
 
-## UI
+```
+nnoremap <silent> <leader>l :exe 'split<bar>terminal set ESLINT_EXEC_PATH (npm bin); "$ESLINT_EXEC_PATH"/eslint ' . expand('%')<cr><c-w><c-p>
+```
 
-I love that I can use the same set of movements on every buffer, regardless if
-it's running a terminal or code. That's beautiful. And VSC doesn't have that.
-So yeah, not much of a competition here.
+It opens a split with a `:terminal` and runs ESlint on the current file.
 
-## Auto suggest
+In Haskell I just open a tmux split for `ghcid` and I do the same in Rust with
+`cargo check`.
 
-Neovim's buffer based completion runs circles around VSCs buffer based
-completion but if a language is supported in VSC then obviously your completion
-and suggestion experience will be much, much nicer than in Neovim. The rise of
-language server plugins will hopefully shift that balance in favor of Neovim
-but right now, if intelligent suggestions are you #1 thing, then Neovim might
-not always be unicorns and rainbows.
+It's simple, leverages existing functionality if possible, but flexible enough
+to adjust to different compilers and linters.
 
-## Git
+### Testing
 
-There's one Git editor integration that I consider truly impressive and that's
-in the IntelliJ editors. VSC has the GitLens plugin which is impressive for its
-feature set, download count and supporter count. And yet, it seems to not have
-anything I actually use. I love the CLI and `git add -p` and `git diff`. It's
-exactly what I want. I do not need anything else for those use cases.
-`vim-fugitive` then adds some other niceties. The most recent patch added the
-`=` shortcut to expand the diff in the `:Gstatus` view. That doesn't mean much
-if you don't use Neovim or that plugins so suffice it to say that viewing the
-diff of your current changes is just like 2 key presses away (I didn't count).
-One command I use a lot is showing me the version of the current file from
-another branch.
+Even less fancy. When I'm in a test file I can hit `<leader>t` to automatically
+run `jest` on the current file. Most of the time I'm using `jest --watch` or I
+have `entr` to watch certain files and just run `stack test` whenever they
+change.
 
-There's one thing where Neovim not only drops the ball but fails to an epic
-extent: merge conflicts. I'd rather pay 100USD for Sublime Merge or keep VSC
-installed _just for resolving merge conflicts_. I think Neovim just isn't the
-right environment for that (or rather TUIs aren't).
+### File Navigation
 
-Bottom line: the Git plugins for VSC somehow manage to not have any features I
-use. So the shell together with `fugitive` and `gv.vim` is way more convenient
-for me. Your mileage may of course vary.
-
-## Syntax Highlighting
-
-VSC is just better in pretty much every language. That's it.
-
-## TL;DR
-
-I would recommend VSC to everyone looking to become a programmer or people who
-are in the market for something. The Neovim learning curve is scary and its
-plugion ecosystem sprawling and not as easy to navigate as VSC.
-
-In the long run however nothing beats the sheer speed of Neovim. And I'm pretty
-positive that that won't change in the foreseeable future. Language server
-plugins are probably going to further close the gap in areas where Neovim is
-lacking.
-
-Linting sucks, everywhere.
+I admit that the vanilla way is pretty slow but the thing is that it's totally
+fine for me. I hit `<leader>e` and I get a command prompt with `:e
+[CURSOR]/**/*`. My cursor position is indicated by [CURSOR]. I enter the base
+folder where I want to search (easier than adding dozens of folders per
+language) and then I just rely on tab completion. I am yet to work on repo so
+big that this is not instantaneous.

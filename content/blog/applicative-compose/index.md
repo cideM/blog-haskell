@@ -7,11 +7,10 @@ date: "2019-03-27"
 
 ```haskell
 instance (Applicative fa, Applicative fb) => Applicative (Compose fa fb) where
-    pure x = Compose (pure (pure x))
     (<*>) :: Compose fa fb (a -> b) -> Compose fa fb a -> Compose fa fb b
     Compose x <*> Compose y = Compose ((<*>) <$> x <*> y)
 ```
-_Functor types are named fa, fb, and so on. If you see an f, it's a function, both on the type and the data level._
+_Functor types are named fa, fb, and so on. If you see an f, it's a function, both on the type and the data level. I refer to fa and fb as functors since the applicative type class requires those things to be functors._
 
 When I went through _Haskell From First Principle_ the first time, I couldn't make sense of the above code. I think I more or less understand it now.
 
@@ -37,7 +36,7 @@ Let's up the ante a bit and wrap both the function and the value in another `May
 
 `> Just (Just ((+) 2)) <*> Just (Just 5)`
 
-This does not work and even without understanding category theory it seems plausible that we can't just add another layer and expect the original to work. After all the types here would be `fa (fb (a -> b)) -> (fa (fb a)) -> (fa (fb b))`, with `fa` and `fb` both `Maybe` -- and that's just not something plain `<*>` can handle.
+This does not work and even without understanding category theory it seems plausible that we can't just add another layer and expect the original to work. After all the types here would be `fa (fb (a -> b)) -> fa (fb a) -> fa (fb b)`, with `fa` and `fb` both `Maybe` -- and that's just not something plain `<*>` can handle.
 
 So what's the #1 solution for manipulating nested stuff in Haskell? Use `lift` or one of its cousins.
 
@@ -51,7 +50,6 @@ How does `liftA2` help us make sense of the instance code though?
 
 ```haskell
 instance (Applicative fa, Applicative fb) => Applicative (Compose fa fb) where
-    pure x = Compose (pure (pure x))
     (<*>) :: Compose fa fb (a -> b) -> Compose fa fb a -> Compose fa fb b
     Compose x <*> Compose y = Compose ((<*>) <$> x <*> y)
 ```
@@ -62,7 +60,6 @@ The first part `(<*>) <$> x` written without infix notation and `fmap` instead o
 instance (Applicative fa, Applicative fb) => Applicative (Compose fa fb) where
     (<*>) :: Compose fa fb (a -> b) -> Compose fa fb a -> Compose fa fb b
                     --  ^^^^^^^^^^^ This is the first argument to <*>
-                    --  fb is a functor, so think `functor (a -> b)`
     Compose x <*> Compose y = 
         -- fa' :: fa (fb a -> fb b)
         --            ^^^^ The 2nd, missing, argument to <*>
